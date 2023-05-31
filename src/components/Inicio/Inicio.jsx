@@ -20,7 +20,7 @@ const defaultPersona = {
 
 export function Inicio() {
   const { dataPersona, data } = useContext(DataContext)
-  
+
   const [detallePersonaje, setDetallePersonaje] = useState(defaultPersona)
 
   // modal
@@ -28,49 +28,49 @@ export function Inicio() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const OpenModal = (created, gender,img, nom, species, type) => {
+  const OpenModal = (created, gender, img, nom, species, type) => {
     setDetallePersonaje(defaultPersona);
     setDetallePersonaje({
       creado: created,
       genero: gender,
-      image:img,
+      image: img,
       name: nom,
       especie: species,
       type: type
     })
   }
 
-    useEffect(() => {
-      dataPersona
-    }, [data]);
+  useEffect(() => {
+    dataPersona
+  }, [data]);
 
   return (
     <>
-    <Container className="p-4" tabIndex={-1}>
-      <Row xs={1} md={2} className="g-4">
-        {dataPersona != null
-          ? dataPersona.map((personaje) => (
+      <Container className="my-5 p-4" tabIndex={-1}>
+        <Row xs={1} md={2} className="g-4 justify-content-center">
+          {dataPersona != null
+            ? dataPersona.map((personaje) => (
               <Card
                 className="m-2 d-flex flex-column p-2"
-                style={{ minHeight: '320px', width: "12rem"  }}
+                style={{ minHeight: '320px', maxWidth: "12rem", width: "50%" }}
                 bg="secondary"
                 key={personaje.id}
                 tabIndex={personaje.id}
               >
                 <Card.Img className="rounded" variant="top" src={personaje.image} />
                 <Card.Body className="position-relative">
-                  <Card.Title>{personaje.name}</Card.Title>
+                  <Card.Title className="text-white">{personaje.name}</Card.Title>
                   <Button
-                    style={{width: "80%"}}
-                    variant="dark" 
-                    className="position-absolute bottom-0" 
+                    style={{ width: "80%" }}
+                    variant="dark"
+                    className="position-absolute bottom-0"
                     onClick={() => {
                       handleShow()
                       OpenModal(
-                        personaje.created, 
+                        personaje.created,
                         personaje.gender,
                         personaje.image,
-                        personaje.name, 
+                        personaje.name,
                         personaje.species,
                         personaje.type)
                     }}>
@@ -79,29 +79,29 @@ export function Inicio() {
                 </Card.Body>
               </Card>
             ))
-          : <Spinner animation="border" />}
-      </Row>
-    </Container>
+            : <Spinner animation="border" />}
+        </Row>
+      </Container>
 
-    <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title> {detallePersonaje.name} </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="row">
-          <div className="col">
-            <img 
-              style={{width: "12rem"  }}
-              src={detallePersonaje.image}
-              alt={detallePersonaje.name}
-            />
-          </div>
-          <div className="col">
-            <p className="fs-6">Creado: {detallePersonaje.creado}</p>
-            <p className="fs-6">Genero: {detallePersonaje.genero} </p>
-            <p className="fs-6">Especie: {detallePersonaje.especie} </p>
-            <p className="fs-6">Tipo: {detallePersonaje.type} </p>
-          </div>
+            <div className="col">
+              <img
+                style={{ width: "12rem" }}
+                src={detallePersonaje.image}
+                alt={detallePersonaje.name}
+              />
+            </div>
+            <div className="col">
+              <p className="fs-6">Creado: {detallePersonaje.creado}</p>
+              <p className="fs-6">Genero: {detallePersonaje.genero} </p>
+              <p className="fs-6">Especie: {detallePersonaje.especie} </p>
+              <p className="fs-6">Tipo: {detallePersonaje.type} </p>
+            </div>
           </div>
         </Modal.Body>
         <Modal.Footer>
