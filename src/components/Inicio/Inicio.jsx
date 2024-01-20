@@ -8,6 +8,7 @@ import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Modal from 'react-bootstrap/Modal';
+import { DetallePersonaje } from "../DetallePersonaje/DetallePersonaje";
 
 const defaultPersona = {
   creado: '',
@@ -88,21 +89,7 @@ export function Inicio() {
           <Modal.Title> {detallePersonaje.name} </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="row">
-            <div className="col">
-              <img
-                style={{ width: "12rem" }}
-                src={detallePersonaje.image}
-                alt={detallePersonaje.name}
-              />
-            </div>
-            <div className="col">
-              <p className="fs-6">Creado: {detallePersonaje.creado}</p>
-              <p className="fs-6">Genero: {detallePersonaje.genero} </p>
-              <p className="fs-6">Especie: {detallePersonaje.especie} </p>
-              <p className="fs-6">Tipo: {detallePersonaje.type} </p>
-            </div>
-          </div>
+          <DetallePersonaje detallePersonaje={detallePersonaje} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
