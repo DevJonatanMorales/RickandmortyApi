@@ -1,17 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Inicio } from "./components/Inicio/Inicio";
 import { Header } from "./components/Header/Header";
-import { DataProvider } from "./context/DataContext";
-import { Pagination } from "./components/Pagination/Pagination";
+import { store } from "./app/store";
+import { PaginationTable } from "./components/Pagination/PaginationTable";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <DataProvider>
-      <Header />
+    <Provider store={store}>
       <Inicio />
-      <Pagination />
-    </DataProvider>
+      <PaginationTable />
+    </Provider>
   </React.StrictMode>
 );

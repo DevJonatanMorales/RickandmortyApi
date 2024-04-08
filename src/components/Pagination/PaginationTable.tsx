@@ -1,18 +1,35 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux'
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
-import { DataContext } from "../../context/DataContext";
+import { info } from "../../models/info";
+import { ellipsisStore } from "../../models/ellipsis";
+import { RickandApi, useGetPaginaQuery } from "../../apis/RickandApi";
 
-export const Pagination = () => {
-  const { setUrl, pagina, paginas, siguiente, anterior } =
-    useContext(DataContext);
-  const [ellipsis, setEllipsis] = useState(0);
+export interface infoState {
+  info: info;
+}
 
-  const generarRango = (desde, hasta) => {
+export const PaginationTable = () => {
+  const [pagina, setPagina] = useState<number>(1);
+  const rickandApi = useSelector((state) => state[RickandApi.reducerPath]);
+  //const { pages: paginas, next: siguiente, prev: anterior } = info;
+
+  const [ellipsis, setEllipsis] = useState<ellipsisStore>({
+    inicio: 0,
+    fin: 0,
+  });
+
+  const generarRango = (desde: number, hasta: number) => {
     return Array.from({ length: hasta - desde + 1 }, (_, i) => i + desde);
   };
 
   useEffect(() => {
+    console.log({rickandApi:rickandApi.queries.getAll});
+    
+  },[rickandApi])
+
+  /* useEffect(() => {
     const maxPaginasEnRango = 3;
 
     let inicioRango = Math.max(1, pagina - Math.floor(maxPaginasEnRango / 2));
@@ -27,54 +44,47 @@ export const Pagination = () => {
       inicio: inicioRango,
       fin: finRango,
     });
-  }, [pagina, paginas]);
+  }, [pagina, paginas]); */
 
-  return (
-    <div className="bg-dark fixed-bottom" style={{
+  return <h1>paginacion</h1>;    {/* <div
+      className="bg-dark fixed-bottom"
+      style={{
         overflow: "auto",
-      }}>
+      }}
+    >
       <div className="col-xl-6 col-lg-9 col-md-12 mx-auto text-white d-flex justify-content-between py-2 px-1 scrollSpy ">
         <Button
           variant="secondary"
           className="m-1"
-          onClick={() => {
-            setUrl("https://rickandmortyapi.com/api/character/?page=1");
-          }}
           disabled={anterior != null ? false : true}
+          onClick={():void => {
+            setPagina(1)
+          }}
         >
           <i className="fa-solid fa-angles-left"></i>
         </Button>
         <Button
           variant="secondary"
           className="m-1"
-          onClick={() => {
-            setUrl(anterior);
-          }}
           disabled={anterior != null ? false : true}
         >
           <i className="fa-solid fa-chevron-left"></i>
         </Button>
 
-        {/* Botones de rango o ellipsis */}
+        {/* Botones de rango o ellipsis }
         {ellipsis.inicio > 1 && (
           <Button
             variant="secondary"
             className="m-1"
-            onClick={() => {
-              setUrl("https://rickandmortyapi.com/api/character/?page=1");
+            onClick={(): void => {
+              setPagina(1);
             }}
           >
             1
           </Button>
         )}
         {ellipsis.inicio > 2 && (
-          <Button
-            variant="secondary"
-            className="m-1"
-            onClick={() => {
-              setUrl(anterior);
-            }}
-          >
+          <Button variant="secondary" className="m-1">
             ...
           </Button>
         )}
@@ -83,36 +93,20 @@ export const Pagination = () => {
             key={value}
             variant="secondary"
             className="m-1"
-            onClick={() => {
-              setUrl(
-                `https://rickandmortyapi.com/api/character/?page=${value}`
-              );
+            onClick={(): void => {
+              setPagina(value);
             }}
           >
             {value}
           </Button>
         ))}
         {ellipsis.fin < paginas - 1 && (
-          <Button
-            variant="secondary"
-            className="m-1"
-            onClick={() => {
-              setUrl(siguiente);
-            }}
-          >
+          <Button variant="secondary" className="m-1">
             ...
           </Button>
         )}
         {ellipsis.fin < paginas && (
-          <Button
-            variant="secondary"
-            className="m-1"
-            onClick={() => {
-              setUrl(
-                `https://rickandmortyapi.com/api/character/?page=${paginas}`
-              );
-            }}
-          >
+          <Button variant="secondary" className="m-1">
             {paginas}
           </Button>
         )}
@@ -120,9 +114,6 @@ export const Pagination = () => {
         <Button
           variant="secondary"
           className="m-1"
-          onClick={() => {
-            setUrl(siguiente);
-          }}
           disabled={siguiente != null ? false : true}
         >
           <i className="fa-solid fa-chevron-right"></i>
@@ -130,16 +121,14 @@ export const Pagination = () => {
         <Button
           variant="secondary"
           className="m-1"
-          onClick={() => {
-            setUrl(
-              `https://rickandmortyapi.com/api/character/?page=${paginas}`
-            );
-          }}
           disabled={siguiente != null ? false : true}
+          onClick={():void => {
+            setPagina(paginas)
+          }}
         >
           <i className="fa-solid fa-angles-right"></i>
         </Button>
       </div>
-    </div>
-  );
+    </div> */}
+    
 };
