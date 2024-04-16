@@ -2,15 +2,20 @@ import { createSlice } from "@reduxjs/toolkit";
 import { info } from "../models/info";
 
 const initialState: info | {} = {
-  count: 0,
-  pages: 0,
-  next: "",
-  prev: null,
+  siguiente: null,
+  anterior: null,
 };
+
 export const infoSlice = createSlice({
   name: "info",
   initialState,
-  reducers: {},
+  reducers: {
+    setInfo: (state, actions) => {
+      const { next, prev } = actions.payload.info;
+      state.siguiente = next;
+      state.anterior = prev;
+    },
+  },
 });
 
-export default infoSlice.reducer
+export default infoSlice.reducer;

@@ -1,4 +1,3 @@
-// En RickandApi.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const RickandApi = createApi({
@@ -11,7 +10,7 @@ export const RickandApi = createApi({
       query: () => '/character'
     }),
     getTodoByName: builder.query({
-      query: (name= '') => {
+      query: (name= '') => {      
         if (name !== '') return `/character?name=${name}`;
         return "/character?page=1";
       },

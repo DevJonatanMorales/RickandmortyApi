@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useGetAllQuery } from "../../apis/RickandApi";
-
-// bootstrap
 import Row from "react-bootstrap/Row";
 import Spinner from "react-bootstrap/Spinner";
 import Card from "react-bootstrap/Card";
@@ -10,24 +7,31 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { DetallePersonaje } from "../DetallePersonaje/DetallePersonaje";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+import { setPersonas } from "../../features/rickandSlice";
 import { Personaje } from "../../models/personaje";
 
-const defaultState = {
-  creado: "",
-  genero: "",
-  image: "",
-  name: "",
-  especie: "",
-  type: "",
-};
+interface DefaultState {
+  creado: string;
+  genero: string;
+  image: string;
+  name: string;
+  especie: string;
+  type: string;
+}
 
 export function Inicio() {
-  const { data } = useGetAllQuery();
-  const [detallePersonaje, setDetallePersonaje] = useState(defaultState);
-  const [personajes, setPersonajes] = useState<Personaje[]|[]>([]);
-  const [isLoading, setIsloading] = useState(true);
-  // modal
-  const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
+  const { data } = useGetAllQuery(undefined);
+  const personajes = useSelector((state: RootState) => state.personajes);
+
+  const [detallePersonaje, setDetallePersonaje] = useState<DefaultState>(
+    {} as DefaultState
+  );
+  const [isLoading, setIsloading] = useState<boolean>(true);
+  const [show, setShow] = useState<boolean>(false);
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -39,7 +43,6 @@ export function Inicio() {
     species: string,
     type: string
   ) => {
-    setDetallePersonaje(defaultState);
     setDetallePersonaje({
       creado: created,
       genero: gender,
@@ -50,26 +53,30 @@ export function Inicio() {
     });
   };
 
-  useEffect(() => {    
+  useEffect(() => {
     if (data) {
-      setPersonajes(data?.results);
       setIsloading(false);
+      dispatch(setPersonas(data.results));
     }
-  }, [data]); //eslint-disable-line
+  }, [data, dispatch]);
 
   return (
     <>
-      <Container className="my-5 p-4" tabIndex={-1}>
+      <Container className="my-5 p-0" tabIndex={-1}>
         <Row xs={1} md={2} className="g-4 justify-content-center">
           {isLoading ? (
             <Spinner animation="border" role="status">
               <span className="visually-hidden">Loading...</span>
             </Spinner>
           ) : (
-            personajes.map((personaje) => (
+            personajes.map((personaje: Personaje) => (
               <Card
                 className="m-2 d-flex flex-column p-2"
-                style={{ minHeight: "320px", maxWidth: "12rem", width: "50%" }}
+                style={{
+                  minHeight: "320px",
+                  maxWidth: "12rem",
+                  width: "50%",
+                }}
                 bg="secondary"
                 key={personaje.id}
                 tabIndex={personaje.id}

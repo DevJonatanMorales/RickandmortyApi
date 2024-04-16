@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import infoReducer from '../features/infoSlice'
-import personajeReducer from '../features/rickandSlice'
+import {personajeSlice} from '../features/rickandSlice'
 import { RickandApi } from '../apis/RickandApi'
 
 export const store = configureStore({
   reducer: {
     [RickandApi.reducerPath]: RickandApi.reducer,
     info:infoReducer,
-    personajes: personajeReducer 
+    personajes: personajeSlice.reducer 
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(RickandApi.middleware),

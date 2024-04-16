@@ -5,7 +5,11 @@ const initialState: Personaje[] | [] = [];
 export const personajeSlice = createSlice({
   name: "personaje",
   initialState,
-  reducers: {},
+  reducers: {
+    setPersonas: (state, action) => {
+      state.splice(0, state.length, ...action.payload);
+    }
+  },
 });
 
-export default personajeSlice.reducer
+export const {setPersonas} = personajeSlice.actions

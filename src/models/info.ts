@@ -1,6 +1,6 @@
 export interface info {
-  count: number;
-  pages: number;
-  next: string;
-  prev: string | null;
+  paginas: 0,
+  pagina: 0,
+  siguiente: "",
+  anterior: null,
 }
