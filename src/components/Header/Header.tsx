@@ -21,21 +21,30 @@ export function Header() {
   }, [data]);
 
   return (
-    <Navbar bg="dark" className="fixed-top" expand="lg">
-      <Container className="d-flex justify-content-between">
-        <Form className="d-flex" onSubmit={(e) => e.preventDefault()}>
-          <Form.Control
-            type="search"
-            placeholder="Escribe un nombre"
-            className="me-2"
-            aria-label="Search"
-            value={searchText}
-            onChange={handleSearch}
-          />
-        </Form>
+    <>
+      <style type="text/css">
+        {`
+          .bgHeader {
+            background-color: #425A7D;
+          }    
+        `}
+      </style>
+      <Navbar className="bgHeader fixed-top" expand="lg">
+        <Container className="d-flex justify-content-between">
+          <Form className="d-flex" onSubmit={(e) => e.preventDefault()}>
+            <Form.Control
+              type="search"
+              placeholder="Escribe un nombre"
+              className="me-2"
+              aria-label="Search"
+              value={searchText}
+              onChange={handleSearch}
+            />
+          </Form>
 
-        <PaginationTable />
-      </Container>
-    </Navbar>
+          <PaginationTable />
+        </Container>
+      </Navbar>
+    </>
   );
 }

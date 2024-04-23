@@ -1,45 +1,69 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux'
-import Container from "react-bootstrap/Container";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
-import { info } from "../../models/info";
-import { ellipsisStore } from "../../models/ellipsis";
-
-export interface infoState {
-  info: info;
-}
+import { RootState } from "../../app/store";
+import { useGetPaginaQuery } from "../../apis/RickandApi";
+import { setPersonas } from "../../features/rickandSlice";
+import { setInfo } from "../../features/infoSlice";
+import { getPagina } from "../../hooks/usePagina";
 
 export const PaginationTable = () => {
-  const [pagina, setPagina] = useState<number>(1);
+  const [pag, setPag] = useState<number>(1);
 
-  const [ellipsis, setEllipsis] = useState<ellipsisStore>({
-    inicio: 0,
-    fin: 0,
-  });
+  const info = useSelector((state: RootState) => state.info);
+  const dispatch = useDispatch();
+  const { data } = useGetPaginaQuery(pag);
 
-  const generarRango = (desde: number, hasta: number) => {
-    return Array.from({ length: hasta - desde + 1 }, (_, i) => i + desde);
-  };
+  useEffect(() => {
+    if (data) {
+      const { results, info } = data;
+      dispatch(setPersonas(results));
+      dispatch(
+        setInfo({
+          siguiente: getPagina(info.next),
+          anterior: getPagina(info.prev),
+        })
+      );
+    }
+  }, [data]);
 
+  return (
+    <>
+      <style type="text/css">
+        {`
+          .bgBtnPag {
+            background-color: #DF7356;
+            border-color: #DF7356;
+          }
+          .bgBtnPag:hover {
+            background-color: #B35E46;
+            border-color: #B35E46;
+          }
+        `}
+      </style>
 
-
-  return (<div
-      className="bg-dark"
-    >
-      <div className="col-3 text-white d-flex justify-content-between py-2 px-1">
-        <Button
-          variant="secondary"
-          className="m-1"
-        >
-          <i className="fa-solid fa-chevron-left"></i>
-        </Button>
-        <Button
-          variant="secondary"
-          className="m-1"
-        >
-          <i className="fa-solid fa-chevron-right"></i>
-        </Button>
+      <div>
+        <div className="col-3 text-white d-flex justify-content-between py-2 px-1">
+          <Button
+            className="m-1 bgBtnPag"
+            value={info.anterior}
+            onClick={() => {
+              setPag(info.anterior);
+            }}
+          >
+            <i className="fa-solid fa-chevron-left"></i>
+          </Button>
+          <Button
+            className="m-1 bgBtnPag"
+            value={info.siguiente}
+            onClick={() => {
+              setPag(info.siguiente);
+            }}
+          >
+            <i className="fa-solid fa-chevron-right"></i>
+          </Button>
+        </div>
       </div>
-    </div> )
-    
+    </>
+  );
 };

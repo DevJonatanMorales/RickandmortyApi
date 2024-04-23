@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { info } from "../models/info";
 
-const initialState: info | {} = {
-  siguiente: null,
-  anterior: null,
+const initialState: info = {
+  siguiente: 1,
+  anterior: 1
 };
 
 export const infoSlice = createSlice({
@@ -11,11 +11,10 @@ export const infoSlice = createSlice({
   initialState,
   reducers: {
     setInfo: (state, actions) => {
-      const { next, prev } = actions.payload.info;
-      state.siguiente = next;
-      state.anterior = prev;
+      state.siguiente = actions.payload.siguiente;
+      state.anterior = actions.payload.anterior;
     },
   },
 });
 
-export default infoSlice.reducer;
+export const { setInfo } = infoSlice.actions;

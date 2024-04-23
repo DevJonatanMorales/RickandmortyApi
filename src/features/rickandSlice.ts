@@ -8,8 +8,8 @@ export const personajeSlice = createSlice({
   reducers: {
     setPersonas: (state, action) => {
       state.splice(0, state.length, ...action.payload);
-    }
+    },
   },
 });
 
-export const {setPersonas} = personajeSlice.actions
+export const { setPersonas } = personajeSlice.actions;
